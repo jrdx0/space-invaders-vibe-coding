@@ -1,5 +1,5 @@
 const server = Bun.serve({
-  port: 3000,
+  port: 3010,
   async fetch(req) {
     const url = new URL(req.url);
 
