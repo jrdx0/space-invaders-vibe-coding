@@ -1,6 +1,30 @@
 <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-  <path d="M10 10 L30 10 L35 20 L30 30 L10 30 L5 20 Z" fill="#ff0000" stroke="#aa0000" stroke-width="2"/>
-  <circle cx="15" cy="18" r="3" fill="white"/>
-  <circle cx="25" cy="18" r="3" fill="white"/>
-  <rect x="15" y="25" width="10" height="2" fill="black"/>
+  <!-- Main body -->
+  <ellipse cx="20" cy="20" rx="14" ry="12" fill="#ff3366" stroke="#cc0033" stroke-width="2"/>
+  
+  <!-- Top dome -->
+  <ellipse cx="20" cy="15" rx="10" ry="8" fill="#ff5577" stroke="#dd1144" stroke-width="1.5"/>
+  
+  <!-- Antennae -->
+  <line x1="12" y1="10" x2="8" y2="4" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="8" cy="4" r="2" fill="#ffff00"/>
+  <line x1="28" y1="10" x2="32" y2="4" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="32" cy="4" r="2" fill="#ffff00"/>
+  
+  <!-- Eyes -->
+  <ellipse cx="15" cy="18" rx="3.5" ry="4.5" fill="#ffffff"/>
+  <ellipse cx="25" cy="18" rx="3.5" ry="4.5" fill="#ffffff"/>
+  <circle cx="15" cy="19" r="2" fill="#000000"/>
+  <circle cx="25" cy="19" r="2" fill="#000000"/>
+  <circle cx="15.5" cy="18" r="0.8" fill="#ffffff"/>
+  <circle cx="25.5" cy="18" r="0.8" fill="#ffffff"/>
+  
+  <!-- Mouth -->
+  <path d="M14 26 Q20 29 26 26" fill="none" stroke="#990022" stroke-width="1.5" stroke-linecap="round"/>
+  
+  <!-- Tentacles -->
+  <path d="M10 28 L8 34 L6 36" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+  <path d="M18 30 L18 36" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+  <path d="M22 30 L22 36" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
+  <path d="M30 28 L32 34 L34 36" fill="none" stroke="#ff3366" stroke-width="2" stroke-linecap="round"/>
 </svg>

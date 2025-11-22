@@ -1,11 +1,21 @@
 <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
-  <!-- Main Body -->
-  <path d="M20 2 L28 30 L20 25 L12 30 Z" fill="#00ff00" stroke="#00aa00" stroke-width="1"/>
-  <!-- Wings -->
-  <path d="M12 25 L2 38 L12 32 Z" fill="#00cc00" stroke="#008800" stroke-width="1"/>
-  <path d="M28 25 L38 38 L28 32 Z" fill="#00cc00" stroke="#008800" stroke-width="1"/>
-  <!-- Engine Flame -->
-  <path d="M18 32 L22 32 L20 38 Z" fill="orange"/>
-  <!-- Cockpit -->
-  <circle cx="20" cy="15" r="3" fill="#ccffcc"/>
+  <!-- Main fuselage -->
+  <path d="M20 4 L26 28 L20 24 L14 28 Z" fill="#00ff88" stroke="#00cc66" stroke-width="1.5"/>
+  
+  <!-- Side wings -->
+  <path d="M14 22 L4 34 L10 28 Z" fill="#00dd77" stroke="#00aa55" stroke-width="1.5"/>
+  <path d="M26 22 L36 34 L30 28 Z" fill="#00dd77" stroke="#00aa55" stroke-width="1.5"/>
+  
+  <!-- Cockpit window -->
+  <ellipse cx="20" cy="14" rx="4" ry="5" fill="#66ffcc" opacity="0.8"/>
+  <circle cx="20" cy="14" r="2.5" fill="#aaffee"/>
+  
+  <!-- Engine exhausts -->
+  <rect x="17" y="28" width="6" height="8" rx="1" fill="#004433"/>
+  <path d="M18 36 L20 38 L22 36" fill="#ff6600" opacity="0.9"/>
+  <path d="M18.5 37 L20 39 L21.5 37" fill="#ffaa00" opacity="0.8"/>
+  
+  <!-- Detail lines -->
+  <line x1="20" y1="8" x2="20" y2="24" stroke="#008855" stroke-width="0.5" opacity="0.6"/>
+  <path d="M16 18 L20 16 L24 18" fill="none" stroke="#00aa66" stroke-width="0.8"/>
 </svg>

@@ -4,6 +4,7 @@ const CANVAS_HEIGHT = 600;
 const PLAYER_SPEED = 5;
 const BULLET_SPEED = 7;
 const ALIEN_SPEED = 1;
+const HEAVY_ALIEN_SPEED = 2; // Faster
 const ALIEN_DROP_DISTANCE = 20;
 
 // Types
@@ -29,6 +30,8 @@ interface Bullet extends GameObject {
 
 interface Alien extends GameObject {
     active: boolean;
+    type: 'normal' | 'heavy';
+    hp: number;
 }
 
 // Game State
@@ -38,9 +41,11 @@ let currentState: GameState = GameState.MENU;
 let player: GameObject;
 let bullets: Bullet[] = [];
 let aliens: Alien[] = [];
+let heavyAliens: Alien[] = []; // Separate list for independent movement
 let keys: { [key: string]: boolean } = {};
 let lastTime = 0;
 let alienDirection = 1; // 1 for right, -1 for left
+let heavyAlienDirection = 1;
 let score = 0;
 let gameOver = false;
 
@@ -49,6 +54,8 @@ const playerImg = new Image();
 playerImg.src = '/assets/player.svg';
 const alienImg = new Image();
 alienImg.src = '/assets/alien.svg';
+const alienPurpleImg = new Image();
+alienPurpleImg.src = '/assets/alien_purple.svg';
 
 function init() {
     canvas = document.getElementById('gameCanvas') as HTMLCanvasElement;
@@ -76,11 +83,13 @@ function resetGame() {
     
     bullets = [];
     aliens = [];
+    heavyAliens = [];
     score = 0;
     gameOver = false;
     alienDirection = 1;
+    heavyAlienDirection = 1;
 
-    // Create Aliens
+    // Create Normal Aliens
     for (let row = 0; row < 4; row++) {
         for (let col = 0; col < 8; col++) {
             aliens.push({
@@ -89,9 +98,25 @@ function resetGame() {
                 width: 40,
                 height: 40,
                 active: true,
-                image: alienImg
+                image: alienImg,
+                type: 'normal',
+                hp: 1
             });
         }
+    }
+
+    // Create Heavy Aliens (Boss row at the top)
+    for (let col = 0; col < 3; col++) {
+        heavyAliens.push({
+            x: 200 + col * 150,
+            y: 20, // Higher up
+            width: 60, // Larger
+            height: 60,
+            active: true,
+            image: alienPurpleImg,
+            type: 'heavy',
+            hp: 4 // 4 hits
+        });
     }
 }
 
@@ -161,7 +186,7 @@ function update(deltaTime: number) {
     });
     bullets = bullets.filter(b => b.active);
 
-    // Update Aliens
+    // Update Normal Aliens
     let hitWall = false;
     aliens.forEach(alien => {
         if (!alien.active) return;
@@ -178,25 +203,55 @@ function update(deltaTime: number) {
         });
     }
 
+    // Update Heavy Aliens (Independent movement, faster)
+    let heavyHitWall = false;
+    heavyAliens.forEach(alien => {
+        if (!alien.active) return;
+        alien.x += HEAVY_ALIEN_SPEED * heavyAlienDirection;
+        if (alien.x <= 0 || alien.x >= CANVAS_WIDTH - alien.width) {
+            heavyHitWall = true;
+        }
+    });
+
+    if (heavyHitWall) {
+        heavyAlienDirection *= -1;
+        heavyAliens.forEach(alien => {
+            alien.y += ALIEN_DROP_DISTANCE;
+        });
+    }
+
     // Collision Detection
     bullets.forEach(bullet => {
+        // Check Normal Aliens
         aliens.forEach(alien => {
-            if (alien.active && bullet.active &&
-                rectIntersect(bullet, alien)) {
+            if (alien.active && bullet.active && rectIntersect(bullet, alien)) {
                 alien.active = false;
                 bullet.active = false;
                 score += 10;
             }
         });
+
+        // Check Heavy Aliens
+        heavyAliens.forEach(alien => {
+            if (alien.active && bullet.active && rectIntersect(bullet, alien)) {
+                alien.hp--;
+                bullet.active = false;
+                if (alien.hp <= 0) {
+                    alien.active = false;
+                    score += 50; // More points for heavy
+                }
+            }
+        });
     });
 
     // Game Over Check
-    if (aliens.some(a => a.active && a.y + a.height >= player.y)) {
+    if (aliens.some(a => a.active && a.y + a.height >= player.y) || 
+        heavyAliens.some(a => a.active && a.y + a.height >= player.y)) {
         gameOver = true;
     }
     
     // Win Check
-    if (aliens.every(a => !a.active)) {
+    if (aliens.every(a => !a.active) && heavyAliens.every(a => !a.active)) {
         // For now, just restart or show win
         resetGame();
     }
@@ -309,7 +364,7 @@ function draw() {
             ctx.fillRect(player.x, player.y, player.width, player.height);
         }
 
-        // Draw Aliens
+        // Draw Normal Aliens
         aliens.forEach(alien => {
             if (alien.active) {
                 if (alien.image && alien.image.complete) {
@@ -318,6 +373,24 @@ function draw() {
                     ctx.fillStyle = 'red';
                     ctx.fillRect(alien.x, alien.y, alien.width, alien.height);
                 }
+            }
+        });
+
+        // Draw Heavy Aliens
+        heavyAliens.forEach(alien => {
+            if (alien.active) {
+                if (alien.image && alien.image.complete) {
+                    ctx.drawImage(alien.image, alien.x, alien.y, alien.width, alien.height);
+                } else {
+                    ctx.fillStyle = 'purple';
+                    ctx.fillRect(alien.x, alien.y, alien.width, alien.height);
+                }
+                
+                // Draw HP bar for heavy aliens
+                ctx.fillStyle = 'red';
+                ctx.fillRect(alien.x, alien.y - 5, alien.width, 3);
+                ctx.fillStyle = 'green';
+                ctx.fillRect(alien.x, alien.y - 5, alien.width * (alien.hp / 4), 3);
             }
         });
 
