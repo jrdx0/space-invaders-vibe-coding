@@ -1,6 +1,6 @@
 # Space Invaders Antigravity
 
-Vibe coded space invaders game using Google Antigravity. This project was created during the workshop "Testing Antigravity" by !(Undefined: A Tech Community)[https://bio.undefined.mx]
+Vibe coded space invaders game using Google Antigravity. This project was created during the workshop "Testing Antigravity" by [Undefined: A Tech Community](https://bio.undefined.mx)
 
 ![Game preview](image.png)
 
